@@ -1,0 +1,66 @@
+{
+  "target": "jq",
+  "sha": "41b8edfe5437fcd25a072081c05f9f770f9e9b85",
+  "corpus_n": 5,
+  "google_pass_n": 5,
+  "google_pass_seeds": [
+    "/opt/cd-ub/campaigns/beat-google/corpus/data.json",
+    "/opt/cd-ub/campaigns/beat-google/corpus/input0.json",
+    "/opt/cd-ub/campaigns/beat-google/corpus/mini1.json",
+    "/opt/cd-ub/campaigns/beat-google/corpus/mini2.json",
+    "/opt/cd-ub/campaigns/beat-google/corpus/sbom.cdx.json"
+  ],
+  "results": [
+    {
+      "seed": "/opt/cd-ub/campaigns/beat-google/corpus/data.json",
+      "sha256": "2792ffbd2efa54ed",
+      "oracles": {
+        "asan": "PASS",
+        "ubsan": "PASS",
+        "msan": "PASS"
+      },
+      "GOOGLE_PASS": true
+    },
+    {
+      "seed": "/opt/cd-ub/campaigns/beat-google/corpus/input0.json",
+      "sha256": "6cde61ff437ed25e",
+      "oracles": {
+        "asan": "PASS",
+        "ubsan": "PASS",
+        "msan": "PASS"
+      },
+      "GOOGLE_PASS": true
+    },
+    {
+      "seed": "/opt/cd-ub/campaigns/beat-google/corpus/mini1.json",
+      "sha256": "c6afdeb23c1967a5",
+      "oracles": {
+        "asan": "PASS",
+        "ubsan": "PASS",
+        "msan": "PASS"
+      },
+      "GOOGLE_PASS": true
+    },
+    {
+      "seed": "/opt/cd-ub/campaigns/beat-google/corpus/mini2.json",
+      "sha256": "85fbce622d07ebfc",
+      "oracles": {
+        "asan": "PASS",
+        "ubsan": "PASS",
+        "msan": "PASS"
+      },
+      "GOOGLE_PASS": true
+    },
+    {
+      "seed": "/opt/cd-ub/campaigns/beat-google/corpus/sbom.cdx.json",
+      "sha256": "0e4bbceeff343675",
+      "oracles": {
+        "asan": "PASS",
+        "ubsan": "PASS",
+        "msan": "PASS"
+      },
+      "GOOGLE_PASS": true
+    }
+  ],
+  "MOCK_PCT": 0
+}

@@ -1,0 +1,27 @@
+# CD-UB / CompDiff artifacts
+*.tar.gz
+.last-pack-name
+reports/live/
+work/
+.DS_Store
+*.pem
+id_rsa*
+.env.local
+
+# Secrets — never commit tokens or keys
+*.pat
+*.token
+ghp_*
+gho_*
+github_token*
+
+# Vendor: CompDiff cloned at runtime (see VENDOR_PIN.txt); not in git
+vendor/CompDiff/
+vendor/CompDiff
+
+# Build artifacts (if vendor present locally)
+vendor/CompDiff/aflpp/*.o
+vendor/CompDiff/compilers/diff-cc-*
+vendor/CompDiff/compilers/diff-cxx-*
+**/bin/
+**/src/

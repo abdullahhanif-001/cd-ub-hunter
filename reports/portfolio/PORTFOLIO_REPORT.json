@@ -1,0 +1,85 @@
+{
+  "title": "CD-UB Portfolio Elite Evaluation",
+  "method": "NIST Juliet-style BAD/GOOD + CompDiff speed-2 oracle + UBSan co-check",
+  "citations": [
+    "NIST Juliet Test Suite C/C++ 1.3 (SAMATE)",
+    "CompDiff ASPLOS 2023 (Li & Su)",
+    "Microsoft Research EMI PLDI 2014",
+    "FuZZan ATC 2020 (Juliet sanitizer methodology)"
+  ],
+  "metrics": {
+    "TP": 3,
+    "FN": 1,
+    "FP": 0,
+    "TN": 4,
+    "recall": 0.75,
+    "false_positive_rate": 0.0,
+    "sanitizer_missed_but_cdub": 3,
+    "cdub_and_ubsan_both": 0,
+    "MOCK_PCT": 0
+  },
+  "cases": [
+    {
+      "name": "01_evalorder_bad",
+      "label": "BAD",
+      "disagree": 1,
+      "ubsan_hit": 0,
+      "seed": "/opt/cd-ub/portfolio/suite/seeds/n10.txt"
+    },
+    {
+      "name": "01_evalorder_good",
+      "label": "GOOD",
+      "disagree": 0,
+      "ubsan_hit": 0,
+      "seed": "/opt/cd-ub/portfolio/suite/seeds/n10.txt"
+    },
+    {
+      "name": "02_call_order_bad",
+      "label": "BAD",
+      "disagree": 1,
+      "ubsan_hit": 0,
+      "seed": "/opt/cd-ub/portfolio/suite/seeds/n5.txt"
+    },
+    {
+      "name": "02_call_order_good",
+      "label": "GOOD",
+      "disagree": 0,
+      "ubsan_hit": 0,
+      "seed": "/opt/cd-ub/portfolio/suite/seeds/n5.txt"
+    },
+    {
+      "name": "03_comma_bad",
+      "label": "BAD",
+      "disagree": 1,
+      "ubsan_hit": 0,
+      "seed": "/opt/cd-ub/portfolio/suite/seeds/n0.txt"
+    },
+    {
+      "name": "03_comma_good",
+      "label": "GOOD",
+      "disagree": 0,
+      "ubsan_hit": 0,
+      "seed": "/opt/cd-ub/portfolio/suite/seeds/n0.txt"
+    },
+    {
+      "name": "04_volatile_bad",
+      "label": "BAD",
+      "disagree": 0,
+      "ubsan_hit": 0,
+      "seed": "/opt/cd-ub/portfolio/suite/seeds/n3.txt"
+    },
+    {
+      "name": "04_volatile_good",
+      "label": "GOOD",
+      "disagree": 0,
+      "ubsan_hit": 0,
+      "seed": "/opt/cd-ub/portfolio/suite/seeds/n3.txt"
+    }
+  ],
+  "gates": {
+    "recall_ge_0_5": true,
+    "fpr_eq_0": true,
+    "complement_ge_1": true,
+    "mock_pct_0": true
+  }
+}

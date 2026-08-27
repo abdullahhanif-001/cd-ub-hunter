@@ -1,0 +1,10 @@
+CompDiff upstream: https://github.com/shao-hua-li/CompDiff
+Pinned commit: 2b2cdd3fa31f83c9a9e4070c2131d156c3dfcad4
+Pinned date note: last upstream push 2023-04-26 (README update)
+License: no LICENSE file in upstream GitHub tree; ASPLOS 2023 artifact checklist claims MIT.
+Attribution: Shaohua Li & Zhendong Su — "Finding Unstable Code via Compiler-Driven Differential Testing" (ASPLOS '23).
+We do not rewrite AFL++/CompDiff oracle; we vendor and wrap for Contabo-safe deploy.
+
+Contabo note: clone CompDiff ON LINUX (install/oneclick reclones if Windows symlink stubs detected).
+AFL++ LLVM mode fails on clang-18 without C++17; Contabo uses gcc-plugin (afl-gcc-fast) via patch-compdiff-contabo.sh.
+Default profile speed-2: gcc -O0 + clang -O3.

@@ -1,0 +1,32 @@
+{
+  "title": "CD-UB Beat Google Sanitizer Campaign",
+  "verdict": "BEAT_HOLD",
+  "target": "jq (OSS-Fuzz enrolled)",
+  "jq_sha": "41b8edfe5437fcd25a072081c05f9f770f9e9b85",
+  "MOCK_PCT": 0,
+  "beat_count": 0,
+  "google_pass_n": 5,
+  "corpus_n": 5,
+  "hunt": {
+    "run_time_s": "7198",
+    "execs_done": "353160",
+    "paths_total": "545",
+    "bitmap_cvg": "4.12%",
+    "unique_crashes": "0",
+    "hunt_status": "NO_RAW_DIFFS\nDIFF_COUNT=0",
+    "profile": "speed-2",
+    "afl_flag": "-y 2"
+  },
+  "oracles": {
+    "google": "ASan + UBSan (+ MSan if built)",
+    "cdub": "CompDiff speed-2 gcc -O0 vs clang -O3"
+  },
+  "pm2": "PM2_GUARD_OK count=6 restarts_sum=131 baseline_sum=131",
+  "citations": [
+    "Google OSS-Fuzz / sanitizers",
+    "CompDiff ASPLOS 2023 \u2014 36/78 bugs sanitizers missed",
+    "Microsoft Research EMI PLDI 2014"
+  ],
+  "confirm_summary": "CANDIDATES=0\nBEAT_COUNT=0",
+  "utc": "2026-08-27T17:50:51.235195Z"
+}
