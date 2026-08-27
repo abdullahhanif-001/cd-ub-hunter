@@ -14,15 +14,15 @@ bash "${ROOT}/deploy/contabo/patch-compdiff-contabo.sh" || true
 if [[ ! -x "${ROOT}/vendor/CompDiff/compilers/diff-cc-0" ]]; then
   (cd "${ROOT}/vendor/CompDiff/compilers" && source ./build.sh)
 fi
-[[ -x "${ROOT}/vendor/CompDiff/aflpp/afl-gcc-fast"
-[[ -x "${ROOT}/vendor/CompDiff/aflpp/afl-fuzz"
+[[ -x "${ROOT}/vendor/CompDiff/aflpp/afl-gcc-fast" ]]
+[[ -x "${ROOT}/vendor/CompDiff/aflpp/afl-fuzz" ]]
 
 bash "${ROOT}/vendor/CompDiff/diff-instrument.sh" "${CAMP}/libtiff-build.sh" \
   2>&1 | tee "${ROOT}/reports/live/beat-libtiff/cdub-instrument.log" | tail -40
 
-[[ -x "${CAMP}/cdub-bin/tiffcp"
-[[ -x "${CAMP}/cdub-bin/tiffcp-0"
-[[ -x "${CAMP}/cdub-bin/tiffcp-1"
+[[ -x "${CAMP}/cdub-bin/tiffcp" ]]
+[[ -x "${CAMP}/cdub-bin/tiffcp-0" ]]
+[[ -x "${CAMP}/cdub-bin/tiffcp-1" ]]
 ls -la "${CAMP}/cdub-bin/"
 bash "${ROOT}/deploy/contabo/pm2-guard.sh"
 echo "CDUB_LIBTIFF_INSTRUMENT_OK"

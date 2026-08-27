@@ -10,7 +10,7 @@ mkdir -p "$SCAN_OUT"
 T0="${CAMP}/cdub-bin/tiffcp-0"
 T1="${CAMP}/cdub-bin/tiffcp-1"
 CORP="${CAMP}/corpus"
-[[ -x "$T0" && [[ -x "$T1"
+[[ -x "$T0" ]] && [[ -x "$T1" ]]
 
 FOUND=0
 SCANNED=0

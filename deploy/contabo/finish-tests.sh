@@ -29,8 +29,8 @@ bash "$ROOT/deploy/contabo/apply-profile.sh" speed-2 | tee -a "$SCORE"
 )
 N=$(jq '[.[].configs[]] | length' "$ROOT/vendor/CompDiff/compilers/config")
 log "DIFF_CONFIG_COUNT=$N"
-[[ -x "$ROOT/vendor/CompDiff/aflpp/afl-fuzz"
-[[ -x "$ROOT/vendor/CompDiff/aflpp/afl-clang-fast"
+[[ -x "$ROOT/vendor/CompDiff/aflpp/afl-fuzz" ]]
+[[ -x "$ROOT/vendor/CompDiff/aflpp/afl-clang-fast" ]]
 log "AFL_OK=1"
 
 log "## Phase 1: Differential Oracle Validation"

@@ -21,6 +21,6 @@ fi
 export CXXFLAGS="-std=c++17"
 CC=clang CXX=clang++ make source-only 2>&1 | tee "${ROOT}/reports/live/afl-rebuild.log" | tail -60
 ls -la afl-fuzz afl-clang-fast afl-clang-fast++ 2>&1
-[[ -x ./afl-fuzz
-[[ -x ./afl-clang-fast
+[[ -x ./afl-fuzz ]]
+[[ -x ./afl-clang-fast ]]
 echo "AFL_BUILD_OK"

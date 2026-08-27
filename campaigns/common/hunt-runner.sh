@@ -27,7 +27,7 @@ if ! dir_has_entries "$SEEDS"; then
 fi
 
 BIN="${CAMP}/${BIN_REL}"
-[[ -x "$BIN"
+[[ -x "$BIN" ]]
 
 set +e
 timeout "$HUNT_SECONDS" \
