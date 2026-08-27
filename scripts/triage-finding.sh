@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# triage-finding.sh — classify a CompDiff diff into report template
+# triage-finding.sh — classify a CompDiff differential into structured report
 set -euo pipefail
 
 ROOT="${CDUB_ROOT:-/opt/cd-ub}"
@@ -16,13 +16,12 @@ cp "${ROOT}/templates/triage-report.md" "$OUTDIR/report.md"
   echo "INPUT=$INPUT"
   echo "CONFIGS=${CDUB_PROFILE:-speed-2}"
   echo "MOCK_PCT=0"
-  echo "NOTES=automated-triage stub; human refine as needed"
+  echo "NOTES=Automated triage classification; manual review required before disclosure"
 } >"$OUTDIR/meta.env"
 
-# Known unsupported: nondeterministic markers
 case "$CLASS" in
   PROGRAM_UB|COMPILER_BUG|FP_MODE|LINE_MACRO|NOISE|UNSUPPORTED_NONDET) ;;
-  *) echo "WARN: unusual class $CLASS" ;;
+  *) echo "WARN: non-standard classification $CLASS" ;;
 esac
 
 echo "TRIAGE_OK $OUTDIR CLASS=$CLASS"

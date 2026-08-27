@@ -61,15 +61,15 @@ bash "$ROOT/deploy/contabo/pm2-guard.sh" | tee -a "$SCORE"
 N="$(jq '[.[].configs[]] | length' "$ROOT/vendor/CompDiff/compilers/config")"
 log "DIFF_CONFIG_COUNT=$N"
 
-# --- T1: instrument unstable-overflow via CompDiff + short fuzz OR direct smoke ---
-log "## T1 self-test"
+# --- Phase 1: Differential Oracle Validation ---
+log "## Phase 1: Differential Oracle Validation"
 T1_OK=0
 # Direct dual-compile smoke (fast reliability gate)
 if bash "$ROOT/targets/unstable-overflow/run-oracle.sh" "$ROOT/work/demo-out" | tee "$ROOT/reports/live/t1-demo.log" | tee -a "$SCORE"; then
   T1_OK=1
-  log "T1_DEMO=PASS"
+  log "PHASE1_ORACLE=PASS"
 else
-  log "T1_DEMO=FAIL"
+  log "PHASE1_ORACLE=FAIL"
 fi
 
 # CompDiff instrument unstable target (speed-2 => -y 2)
@@ -99,15 +99,15 @@ else
   log "T1_COMPDIFF_FUZZ=SKIP_NO_AFL"
 fi
 bash "$ROOT/deploy/contabo/pm2-guard.sh" | tee -a "$SCORE"
-log "T1_SELF=$([ $T1_OK -eq 1 ] && echo PASS || echo FAIL)"
+log "PHASE1_AGGREGATE=$([ $T1_OK -eq 1 ] && echo PASS || echo FAIL)"
 
-# --- T2 ---
-log "## T2 cyber defensive"
+# --- Phase 2: Co-tenancy Isolation & Safety Conformance ---
+log "## Phase 2: Co-tenancy Isolation & Safety Conformance"
 bash "$ROOT/deploy/contabo/cyber-defensive-audit.sh" | tee -a "$SCORE"
 bash "$ROOT/deploy/contabo/pm2-guard.sh" | tee -a "$SCORE"
 
-# --- T3 Ultra: original binaries disagreement ---
-log "## T3 deep ultra MOCK_PCT=0"
+# --- Phase 3: End-to-End Differential Confirmation ---
+log "## Phase 3: End-to-End Differential Confirmation"
 ULTRA=FAIL
 if bash "$ROOT/targets/unstable-overflow/run-oracle.sh" "$ROOT/work/ultra-out" | tee "$ROOT/reports/live/t3-ultra.log" | tee -a "$SCORE"; then
   bash "$ROOT/scripts/triage-finding.sh" PROGRAM_UB unstable-overflow \
@@ -147,7 +147,7 @@ if [ "${RUN_XPDF:-0}" = "1" ] && [ -x "$ROOT/vendor/CompDiff/aflpp/afl-clang-fas
 fi
 
 bash "$ROOT/deploy/contabo/pm2-guard.sh" | tee -a "$SCORE"
-log "ULTRA_PASS=$([ "$ULTRA" = PASS ] && echo PASS || echo FAIL)"
+log "PHASE3_CONFIRMATION=$([ "$ULTRA" = PASS ] && echo PASS || echo FAIL)"
 log "PM2_GUARD=PASS"
 log "KEEP_UNTIL_USER_WIPE=1"
 log "VPS_PATH=$ROOT remains (AUTO_WIPE=0)"

@@ -37,9 +37,18 @@ bash /opt/cd-ub/deploy/contabo/install-from-tar.sh /opt/cd-ub-incoming/cd-ub-*.t
 bash /opt/cd-ub/scripts/oneclick/cdub-oneclick.sh
 ```
 
+## Verification
+
+See [tests/TEST_PLAN.md](tests/TEST_PLAN.md) for the formal phase matrix. Production evidence: [tests/evidence/contabo-verification-2026-08-27.md](tests/evidence/contabo-verification-2026-08-27.md).
+
+```bash
+bash tests/run-suite.sh          # full Phase 1–3 on deployed host
+bash tests/run-oracle-local.sh   # portable oracle only (gcc + clang)
+```
+
 ## Verified Contabo scorecard
 
-See [reports/SCORECARD.md](reports/SCORECARD.md) — `VERDICT=READY`, `ULTRA_PASS=PASS`, `MOCK_PCT=0`, `PM2_GUARD_OK`, `/opt/cd-ub` kept until you order wipe.
+See [reports/SCORECARD.md](reports/SCORECARD.md) — `VERDICT=READY`, `PHASE3_CONFIRMATION=PASS`, `MOCK_PCT=0`, PM2 guard held, `/opt/cd-ub` kept until you order wipe.
 
 ## Wipe
 

@@ -1,0 +1,19 @@
+{
+  "test_id": "T1.1",
+  "target": "unstable-overflow",
+  "seed": "targets/unstable-overflow/seeds/overflow.txt",
+  "compiler_pair": {
+    "baseline": "gcc -O0",
+    "variant": "clang -O3"
+  },
+  "observed_outputs": {
+    "gcc_O0": "R 12 11 10",
+    "clang_O3": "R 10 11 12"
+  },
+  "differential_detected": true,
+  "classification": "PROGRAM_UB",
+  "mock_pct": 0,
+  "host": "vmi3469243",
+  "verified_utc": "2026-08-27T17:11:38Z",
+  "maintainer": "abdullah"
+}

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# finish-tests.sh — T1/T2/T3 after CompDiff+AFL ready; never wipe; never touch PM2
+# finish-tests.sh — Phase 1–3 verification after CompDiff+AFL ready; never wipe; never touch PM2
 set -euo pipefail
 ROOT=/opt/cd-ub
 cd "$ROOT"
@@ -30,10 +30,11 @@ test -x "$ROOT/vendor/CompDiff/aflpp/afl-fuzz"
 test -x "$ROOT/vendor/CompDiff/aflpp/afl-clang-fast"
 log "AFL_OK=1"
 
-# T1 demo dual-compile
-log "## T1"
+# T1: Phase 1 — Differential Oracle Validation
+log "## Phase 1: Differential Oracle Validation"
 bash "$ROOT/targets/unstable-overflow/run-oracle.sh" "$ROOT/work/demo-out" | tee "$ROOT/reports/live/t1-demo.log" | tee -a "$SCORE"
-T1=PASS
+PHASE1_OK=PASS
+log "PHASE1_ORACLE=PASS"
 
 # T1 CompDiff instrument unstable + short fuzz
 bash "$ROOT/vendor/CompDiff/diff-instrument.sh" "$ROOT/targets/unstable-overflow/build.sh" \
@@ -49,7 +50,8 @@ if [ -x "$BINDIR/unstable" ]; then
   log "T1_COMPDIFF_FUZZ=RAN"
 else
   log "T1_COMPDIFF_FUZZ=NO_BIN"
-  T1=FAIL
+  log "PHASE1_ORACLE=FAIL"
+  PHASE1_OK=FAIL
 fi
 
 # T1 libtiff short path
@@ -70,19 +72,19 @@ else
   log "T1_LIBTIFF=NO_BIN"
 fi
 bash "$ROOT/deploy/contabo/pm2-guard.sh" | tee -a "$SCORE"
-log "T1_SELF=$T1"
+log "PHASE1_AGGREGATE=$PHASE1_OK"
 
-# T2
-log "## T2"
+# Phase 2 — Co-tenancy Isolation & Safety Conformance
+log "## Phase 2: Co-tenancy Isolation & Safety Conformance"
 bash "$ROOT/deploy/contabo/cyber-defensive-audit.sh" | tee -a "$SCORE"
 bash "$ROOT/deploy/contabo/pm2-guard.sh" | tee -a "$SCORE"
 
-# T3 ultra
-log "## T3"
+# Phase 3 — End-to-End Differential Confirmation
+log "## Phase 3: End-to-End Differential Confirmation"
 bash "$ROOT/targets/unstable-overflow/run-oracle.sh" "$ROOT/work/ultra-out" | tee "$ROOT/reports/live/t3-ultra.log" | tee -a "$SCORE"
 bash "$ROOT/scripts/triage-finding.sh" PROGRAM_UB unstable-overflow \
   "$ROOT/targets/unstable-overflow/seeds/overflow.txt" | tee -a "$SCORE"
-log "ULTRA_PASS=PASS"
+log "PHASE3_CONFIRMATION=PASS"
 log "CLASS=PROGRAM_UB"
 log "MOCK_PCT=0"
 bash "$ROOT/deploy/contabo/pm2-guard.sh" | tee -a "$SCORE"

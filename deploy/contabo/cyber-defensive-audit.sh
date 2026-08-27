@@ -1,72 +1,71 @@
 #!/usr/bin/env bash
-# cyber-defensive-audit.sh — T2: prove wrappers cannot harm co-resident services
+# Phase 2: co-tenancy isolation and safety conformance audit
 set -euo pipefail
 
 ROOT="${CDUB_ROOT:-/opt/cd-ub}"
 cd "$ROOT"
 FAIL=0
 
-echo "=== T2 cyber defensive ==="
+echo "=== Phase 2: Co-tenancy Isolation & Safety Conformance ==="
 
-# 1) No pm2 mutate in our wrappers
+# 2.1 — Wrapper must not mutate co-resident PM2 processes
 if grep -RInE 'pm2 (restart|reload|stop|start|delete|kill)' deploy scripts config 2>/dev/null; then
-  echo "FAIL: pm2 mutate present"
+  echo "FAIL [2.1]: PM2 mutation commands present in wrapper tree"
   FAIL=1
 else
-  echo "PASS: no pm2 mutate in wrappers"
+  echo "PASS [2.1]: No PM2 mutation commands in wrappers"
 fi
 
-# 2) No nginx reload
+# 2.2 — No nginx/mongo service disruption
 if grep -RInE 'nginx|systemctl (reload|restart) nginx' deploy scripts config 2>/dev/null | grep -v ROLLBACK | grep -v 'never' | grep -v Forbidden; then
-  # allow mentions in comments/docs saying never touch
   :
 fi
 if grep -RInE 'systemctl (reload|restart) nginx|docker (stop|rm).*mongo' deploy scripts 2>/dev/null; then
-  echo "FAIL: nginx/mongo mutate commands"
+  echo "FAIL [2.2]: nginx/mongo disruption commands detected"
   FAIL=1
 else
-  echo "PASS: no nginx/mongo mutate commands"
+  echo "PASS [2.2]: No nginx/mongo disruption commands"
 fi
 
-# 3) Jail: install scripts only mention /opt/cd-ub*
+# 2.3 — Path confinement under /opt/cd-ub
 if grep -RInE 'rsync.*/opt/(elite|xerosphere|rider)' deploy scripts 2>/dev/null; then
-  echo "FAIL: path escape to other /opt apps"
+  echo "FAIL [2.3]: Path escape to co-resident /opt applications"
   FAIL=1
 else
-  echo "PASS: no /opt escape to other apps"
+  echo "PASS [2.3]: No path escape to co-resident applications"
 fi
 
-# 4) Secrets not in tree
+# 2.4 — Secret surface scan
 if find . -name '*.pem' -o -name 'id_rsa*' -o -name '*.env.local' 2>/dev/null | grep -v vendor | head -5 | grep .; then
-  echo "FAIL: secret-like files present"
+  echo "FAIL [2.4]: Secret-like artifacts present in owned tree"
   FAIL=1
 else
-  echo "PASS: no obvious secrets"
+  echo "PASS [2.4]: No secret-like artifacts in owned tree"
 fi
 
-# 5) Caps visible
+# 2.5 — systemd resource envelope
 if systemctl show cd-ub.service -p CPUQuota -p MemoryMax 2>/dev/null | grep -E 'CPUQuota|MemoryMax'; then
-  echo "PASS: systemd caps visible"
+  echo "PASS [2.5]: systemd resource caps visible"
 else
-  echo "WARN: cd-ub.service caps not visible (unit may be oneshot true)"
+  echo "WARN [2.5]: cd-ub.service caps not visible (unit may be oneshot)"
 fi
 
-# 6) Wipe blocked without confirm
+# 2.6 — Destructive wipe requires explicit operator confirmation
 WIPE_OUT="$(CONFIRM_USER_WIPE=0 AUTO_WIPE=0 bash deploy/contabo/wipe-ephemeral.sh 2>&1 || true)"
 if echo "$WIPE_OUT" | grep -q REFUSED; then
-  echo "PASS: wipe refused without confirm"
+  echo "PASS [2.6]: Ephemeral wipe gated behind explicit confirmation"
 else
-  echo "FAIL: wipe did not refuse"
+  echo "FAIL [2.6]: Wipe executed or failed to refuse without confirmation"
   echo "$WIPE_OUT"
   FAIL=1
 fi
 
-# 7) pm2-guard
+# 2.7 — PM2 co-tenancy guard
 bash deploy/contabo/pm2-guard.sh || FAIL=1
 
 if [ "$FAIL" -ne 0 ]; then
-  echo "T2_CYBER=FAIL"
+  echo "PHASE2_RESULT=FAIL"
   exit 1
 fi
-echo "T2_CYBER=PASS"
+echo "PHASE2_RESULT=PASS"
 exit 0
