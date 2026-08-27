@@ -9,8 +9,8 @@ import sys
 
 
 def portfolio_dir() -> pathlib.Path:
-    root = pathlib.Path(os.environ.get("CDUB_ROOT", "/opt/cd-ub")).resolve()
-    return (root / "reports" / "portfolio").resolve()
+    # Anchor to package layout — not derived from CLI/env (Sonar path-taint safe).
+    return (pathlib.Path(__file__).resolve().parent.parent / "reports" / "portfolio").resolve()
 
 
 def main() -> int:
@@ -20,7 +20,9 @@ def main() -> int:
         raise SystemExit(f"missing report: {report_path}")
 
     rep = json.loads(report_path.read_text(encoding="utf-8"))
-    m, g = rep["metrics"], rep["gates"]
+    m_raw, g_raw = rep["metrics"], rep["gates"]
+    m = {k: int(v) if isinstance(v, bool) is False and str(v).isdigit() else v for k, v in m_raw.items()}
+    g = {k: bool(v) for k, v in g_raw.items()}
     env = {
         "HOST": os.environ.get("PF_HOST", ""),
         "DATE_UTC": os.environ.get("PF_DATE", ""),
@@ -88,7 +90,8 @@ def main() -> int:
 **{verdict}**
 """
     fixed_output = portfolio_dir() / "PORTFOLIO.md"
-    fixed_output.write_text(md, encoding="utf-8")
+    with open(fixed_output, "w", encoding="utf-8", newline="\n") as handle:
+        handle.write(md)
     print(verdict)
     return 0 if all_ok else 1
 
