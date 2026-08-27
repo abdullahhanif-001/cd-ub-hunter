@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Write PORTFOLIO.md from PORTFOLIO_REPORT.json + env facts (path-validated)."""
+"""Write PORTFOLIO.md from PORTFOLIO_REPORT.json + env facts (fixed portfolio path only)."""
 from __future__ import annotations
 
 import json
@@ -8,19 +8,13 @@ import pathlib
 import sys
 
 
-def resolve_portfolio_dir(raw: str | None) -> pathlib.Path:
+def portfolio_dir() -> pathlib.Path:
     root = pathlib.Path(os.environ.get("CDUB_ROOT", "/opt/cd-ub")).resolve()
-    allowed = (root / "reports" / "portfolio").resolve()
-    if not raw:
-        return allowed
-    candidate = pathlib.Path(raw).resolve()
-    if candidate != allowed and allowed not in candidate.parents:
-        raise SystemExit(f"refusing path outside portfolio dir: {candidate}")
-    return candidate
+    return (root / "reports" / "portfolio").resolve()
 
 
 def main() -> int:
-    out = resolve_portfolio_dir(sys.argv[1] if len(sys.argv) > 1 else None)
+    out = portfolio_dir()
     report_path = out / "PORTFOLIO_REPORT.json"
     if not report_path.is_file():
         raise SystemExit(f"missing report: {report_path}")
@@ -93,8 +87,8 @@ def main() -> int:
 ## Verdict
 **{verdict}**
 """
-    output_md = out / "PORTFOLIO.md"
-    output_md.write_text(md, encoding="utf-8")
+    fixed_output = portfolio_dir() / "PORTFOLIO.md"
+    fixed_output.write_text(md, encoding="utf-8")
     print(verdict)
     return 0 if all_ok else 1
 

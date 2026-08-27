@@ -223,7 +223,7 @@ print("GATES", report["gates"])
 PY
 
 export PF_PM2="$(bash "$GUARD" | tail -1)"
-python3 "${ROOT}/portfolio/write_portfolio_md.py" "$OUT"
+python3 "${ROOT}/portfolio/write_portfolio_md.py"
 STATUS=$?
 bash "$GUARD"
 echo "ARTIFACTS=$OUT"
