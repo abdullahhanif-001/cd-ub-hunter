@@ -1,4 +1,4 @@
-# Production Verification Record — Contabo VPS
+# Production Verification Record — Linux VPS
 
 | Field | Value |
 |-------|-------|

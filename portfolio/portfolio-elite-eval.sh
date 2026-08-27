@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# portfolio-elite-eval.sh — Google/Microsoft-credible CD-UB evaluation (Contabo)
+# portfolio-elite-eval.sh — Google/Microsoft-credible CD-UB evaluation (shared VPS)
 set -euo pipefail
 
 ROOT="${CDUB_ROOT:-/opt/cd-ub}"

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Contabo: background AFL hunt (2h default)
+# VPS: background AFL hunt (2h default)
 set -euo pipefail
 ROOT="${CDUB_ROOT:-/opt/cd-ub}"
 OUT="${ROOT}/reports/live/beat-google"

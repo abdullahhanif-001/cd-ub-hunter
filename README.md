@@ -1,6 +1,6 @@
-# CD-UB Hunter (CompDiff one-click on Contabo)
+# CD-UB Hunter (CompDiff one-click on any VPS)
 
-Thin Contabo-safe wrapper around upstream [CompDiff](https://github.com/shao-hua-li/CompDiff) (ASPLOS'23). No greenfield fuzzer.
+Thin VPS-safe wrapper around upstream [CompDiff](https://github.com/shao-hua-li/CompDiff) (ASPLOS'23). No greenfield fuzzer.
 
 **Maintainer:** abdullah
 
@@ -27,12 +27,12 @@ Defaults: `speed-2` (`gcc -O0` + `clang -O3`), `AUTO_WIPE=0`, PM2×6 guards, CPU
 
 CompDiff is cloned on Linux at pin from `VENDOR_PIN.txt` (not stored in git). Uses `afl-gcc-fast` (gcc plugin) because CompDiff's bundled AFL++ LLVM mode needs patches for clang 18.
 
-## Pack for Contabo (from dev host)
+## Pack for VPS (from dev host)
 
 ```bash
 bash deploy/contabo/pack.sh
-scp cd-ub-*.tar.gz contabo-server:/opt/cd-ub-incoming/
-ssh contabo-server
+scp cd-ub-*.tar.gz your-vps:/opt/cd-ub-incoming/
+ssh your-vps
 bash /opt/cd-ub/deploy/contabo/install-from-tar.sh /opt/cd-ub-incoming/cd-ub-*.tar.gz
 bash /opt/cd-ub/scripts/oneclick/cdub-oneclick.sh
 ```
@@ -42,14 +42,14 @@ bash /opt/cd-ub/scripts/oneclick/cdub-oneclick.sh
 SonarQube analysis scope: owned wrapper only (`vendor/` excluded). Run `bash tests/run-suite.sh` before analysis.
 
 
-See [tests/TEST_PLAN.md](tests/TEST_PLAN.md) for the formal phase matrix. Production evidence: [tests/evidence/contabo-verification-2026-08-27.md](tests/evidence/contabo-verification-2026-08-27.md).
+See [tests/TEST_PLAN.md](tests/TEST_PLAN.md) for the formal phase matrix. Production evidence: [tests/evidence/vps-verification-2026-08-27.md](tests/evidence/vps-verification-2026-08-27.md).
 
 ```bash
 bash tests/run-suite.sh          # full Phase 1–3 on deployed host
 bash tests/run-oracle-local.sh   # portable oracle only (gcc + clang)
 ```
 
-## Verified Contabo scorecard
+## Verified production scorecard
 
 See [reports/SCORECARD.md](reports/SCORECARD.md) — `VERDICT=READY`, `PHASE3_CONFIRMATION=PASS`, `MOCK_PCT=0`, PM2 guard held, `/opt/cd-ub` kept until you order wipe.
 

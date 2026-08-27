@@ -58,7 +58,7 @@ bash "$ROOT/deploy/contabo/pm2-guard.sh"
 # systemd unit with caps
 cat >/etc/systemd/system/cd-ub.service <<'UNIT'
 [[Unit]]
-Description=CD-UB CompDiff worker (Contabo isolated)
+Description=CD-UB CompDiff worker (VPS isolated)
 After=network.target
 
 [[Service]]

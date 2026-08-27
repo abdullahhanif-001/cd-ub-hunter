@@ -9,7 +9,7 @@
    Sources: Microsoft Research EMI (PLDI’14); CompDiff ASPLOS’23.
 4. **Reproducible artifacts**: compiler versions, SHA256 of binaries/outputs, host facts, no mocks  
    Sources: Alive2 / LLVM continuous validation culture (PLDI’21).
-5. **Safety on shared infra**: PM2 guard unchanged (our Contabo constraint).
+5. **Safety on shared infra**: PM2 guard unchanged (our shared-VPS constraint).
 
 ## This suite
 - Curated **ground-truth microbench** (Juliet-method labels: BAD expects disagreement, GOOD expects agreement)

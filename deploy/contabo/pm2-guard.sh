@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# pm2-guard.sh — Contabo PM2 x6 safety (delta restarts, never mutate PM2)
+# pm2-guard.sh — shared VPS PM2 x6 safety (delta restarts, never mutate PM2)
 set -euo pipefail
 
 ROOT="${CDUB_ROOT:-/opt/cd-ub}"

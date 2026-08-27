@@ -43,4 +43,4 @@
 | Disk headroom | 82G available on `/` |
 | Phase 3 aggregate | **PASS** |
 
-Full evidence: [`tests/evidence/contabo-verification-2026-08-27.md`](../tests/evidence/contabo-verification-2026-08-27.md)
+Full evidence: [`tests/evidence/vps-verification-2026-08-27.md`](../tests/evidence/vps-verification-2026-08-27.md)

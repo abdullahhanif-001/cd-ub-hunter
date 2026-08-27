@@ -1,3 +1,6 @@
+# Local-only (not for GitHub)
+INTERVIEW.md
+
 # CD-UB / CompDiff artifacts
 *.tar.gz
 .last-pack-name

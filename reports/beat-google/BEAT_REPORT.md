@@ -11,7 +11,7 @@ OSS-Fuzz-enrolled **jq** @ `41b8edfe5437fcd25a072081c05f9f770f9e9b85`: on the sa
 2. ASan/UBSan(/MSan) silent on I  
 3. Reproducible x3  
 4. Triage not NOISE  
-5. PM2 guard green on Contabo
+5. PM2 guard green on VPS
 
 ## Numbers
 | Metric | Value |

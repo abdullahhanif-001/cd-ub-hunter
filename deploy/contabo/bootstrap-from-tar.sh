@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# bootstrap: extract tar then install (first contact on Contabo)
+# bootstrap: extract tar then install (first contact on VPS)
 set -euo pipefail
 
 TAR="${1:?tar path}"

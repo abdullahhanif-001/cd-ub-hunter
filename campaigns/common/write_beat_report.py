@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Write BEAT_REPORT.md/json from Contabo campaign artifacts."""
+"""Write BEAT_REPORT.md/json from VPS campaign artifacts."""
 from __future__ import annotations
 
 import json
@@ -108,7 +108,7 @@ def build_report(
 2. ASan/UBSan(/MSan) silent on I  
 3. Reproducible x3  
 4. Triage not NOISE  
-5. PM2 guard green on Contabo
+5. PM2 guard green on VPS
 
 ## Numbers
 | Metric | Value |

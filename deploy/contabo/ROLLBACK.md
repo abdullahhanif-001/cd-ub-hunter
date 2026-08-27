@@ -1,4 +1,4 @@
-# Rollback CD-UB on Contabo
+# Rollback CD-UB on VPS
 
 ## Rules
 - Never touch PM2 apps, nginx, or `rider-tracker-mongo`.

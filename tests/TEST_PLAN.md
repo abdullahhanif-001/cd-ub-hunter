@@ -1,7 +1,7 @@
 # CD-UB Hunter — Verification Test Plan
 
 **Maintainer:** abdullah  
-**Scope:** Contabo-safe CompDiff wrapper (not upstream CompDiff/AFL++ unit tests)  
+**Scope:** VPS-safe CompDiff wrapper (not upstream CompDiff/AFL++ unit tests)  
 **Acceptance gate:** `VERDICT=READY` requires Phase 1 + Phase 2 + Phase 3 PASS with `MOCK_PCT=0`
 
 ## Test matrix
@@ -37,4 +37,4 @@ bash tests/run-safety-audit.sh
 
 ## Evidence
 
-Recorded production verification: [`tests/evidence/contabo-verification-2026-08-27.md`](evidence/contabo-verification-2026-08-27.md)
+Recorded production verification: [`tests/evidence/vps-verification-2026-08-27.md`](evidence/vps-verification-2026-08-27.md)

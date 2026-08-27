@@ -49,7 +49,7 @@ fi
 
 bash "$ROOT/deploy/contabo/apply-profile.sh" "${CDUB_PROFILE:-speed-2}" | tee -a "$SCORE"
 if ! bash "$ROOT/deploy/contabo/patch-compdiff-contabo.sh" 2>&1 | tee -a "$SCORE"; then
-  echo "WARN: Contabo patch step returned non-zero" >&2
+  echo "WARN: VPS patch step returned non-zero" >&2
 fi
 export AFL_NO_X86=1
 if ! bash "$ROOT/deploy/contabo/rebuild-afl.sh" 2>&1 | tee -a "$SCORE"; then
