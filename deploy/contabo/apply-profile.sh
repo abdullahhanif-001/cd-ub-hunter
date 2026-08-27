@@ -8,14 +8,14 @@ PROFILE_NAME="${1:-${CDUB_PROFILE:-speed-2}}"
 PROFILE_FILE="${REPO_ROOT}/profiles/${PROFILE_NAME}.json"
 TARGET="${REPO_ROOT}/vendor/CompDiff/compilers/config"
 
-if [ ! -f "$PROFILE_FILE" ]; then
+if [[ ! -f "$PROFILE_FILE" ]]; then
   echo "FAIL: missing profile $PROFILE_FILE"
   exit 1
 fi
 
 # Gate full-10
-if [ "$PROFILE_NAME" = "full-10" ]; then
-  if [ "${ALLOW_FULL_10:-0}" != "1" ]; then
+if [[ "$PROFILE_NAME" = "full-10" ]]; then
+  if [[ "${ALLOW_FULL_10:-0}" != "1" ]]; then
     echo "FAIL: full-10 requires ALLOW_FULL_10=1 and resource checks"
     exit 1
   fi

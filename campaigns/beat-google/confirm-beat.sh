@@ -35,14 +35,14 @@ confirm_one() {
 
   local san_hit=0
   for exe in "$ASAN" "$UBSAN" "$MSAN"; do
-    [ -x "$exe" ] || continue
+    [[ -x "$exe" ]] || continue
     set +e
     timeout 3 "$exe" "." "$inp" >"$d/san-$(basename "$exe").txt" 2>&1
     local rc=$?
     set -e
     local t
     t="$(cat "$d/san-$(basename "$exe").txt" 2>/dev/null || true)"
-    if [ "$rc" -ne 0 ] || echo "$t" | grep -qiE 'sanitizer|runtime error|SUMMARY:|heap-|stack-'; then
+    if [[ "$rc" -ne 0 ]] || echo "$t" | grep -qiE 'sanitizer|runtime error|SUMMARY:|heap-|stack-'; then
       san_hit=1
     fi
   done
@@ -59,7 +59,7 @@ confirm_one() {
   sha256sum "$JQ0" "$JQ1" "$d/out0.txt" "$d/out1.txt" "$d/input" >"$d/SHA256.txt"
 
   local triage=NOISE
-  if [ "$disagree" -eq 1 ] && [ "$san_hit" -eq 0 ] && [ "$stable" -eq 1 ]; then
+  if [[ "$disagree" -eq 1 ]] && [[ "$san_hit" -eq 0 ]] && [[ "$stable" -eq 1 ]]; then
     triage=PROGRAM_UB
     # Heuristic: eval-order-like numeric permutation in outputs
     if grep -qE '^[0-9.[:space:]\{\}\[\]",:]+$' "$d/out0.txt" 2>/dev/null; then
@@ -77,18 +77,18 @@ confirm_one() {
 : >"${OUT}/beats.txt"
 : >"${OUT}/confirm_log.txt"
 
-if [ ! -d "$DIFFS" ] || [ -z "$(ls -A "$DIFFS" 2>/dev/null || true)" ]; then
+if [[ ! -d "$DIFFS" ]] || [[ -z "$(ls -A "$DIFFS" 2>/dev/null || true)" ]]; then
   echo "NO_DIFFS_TO_CONFIRM"
 else
   for f in "$DIFFS"/*; do
-    [ -f "$f" ] || continue
+    [[ -f "$f" ]] || continue
     CANDIDATES=$((CANDIDATES + 1))
     confirm_one "$f"
   done
 fi
 
 # Probe GOOGLE_PASS seeds + AFL queue sample for CD-UB disagreement
-if [ -x "$JQ0" ] && [ -x "$JQ1" ]; then
+if [[ -x "$JQ0" ]] && [[ -x "$JQ1" ]]; then
   python3 - <<'PY'
 import json, pathlib, subprocess, hashlib
 out = pathlib.Path("/opt/cd-ub/reports/live/beat-google")

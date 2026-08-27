@@ -26,7 +26,7 @@ build_one() {
   mkdir -p "$bdir"
   cp -a "$SRC/." "$bdir/"
   cd "$bdir"
-  if [ ! -f configure ]; then
+  if [[ ! -f configure ]]; then
     ./autogen.sh 2>/dev/null || true
   fi
   # shellcheck disable=SC2086

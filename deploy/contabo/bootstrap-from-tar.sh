@@ -14,11 +14,11 @@ trap 'rm -rf "$TMP"' EXIT
 tar -xzf "$TAR" -C "$TMP"
 
 SRC=""
-if [ -f "$TMP/deploy/contabo/install-from-tar.sh" ]; then
+if [[ -f "$TMP/deploy/contabo/install-from-tar.sh" ]]; then
   SRC="$TMP"
 else
   INSTALL_SCRIPT="$(find "$TMP" -type f -name install-from-tar.sh -print -quit)"
-  if [ -z "$INSTALL_SCRIPT" ]; then
+  if [[ -z "$INSTALL_SCRIPT" ]]; then
     echo "FATAL: install-from-tar.sh not found in archive" >&2
     exit 1
   fi

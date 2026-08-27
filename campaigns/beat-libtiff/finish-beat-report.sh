@@ -7,20 +7,20 @@ mkdir -p "${ROOT}/reports/portfolio" "${ROOT}/reports/beat-libtiff"
 
 link_campaign3() {
   local port="$1"
-  if [ ! -f "$port" ]; then
+  if [[ ! -f "$port" ]]; then
     echo "# CD-UB Portfolio" >"$port"
   fi
   if ! grep -q "Campaign 3: Beat Google on libtiff" "$port" 2>/dev/null; then
     {
       echo ""
       echo "## Campaign 3: Beat Google on libtiff"
-      echo "See [../beat-libtiff/BEAT_REPORT.md](../beat-libtiff/BEAT_REPORT.md)."
+      echo "See [[../beat-libtiff/BEAT_REPORT.md](../beat-libtiff/BEAT_REPORT.md)."
     } >>"$port"
   fi
 }
 
 link_campaign3 "${ROOT}/reports/portfolio/PORTFOLIO.md"
-if [ -f "${ROOT}/reports/live/portfolio/PORTFOLIO.md" ]; then
+if [[ -f "${ROOT}/reports/live/portfolio/PORTFOLIO.md" ]]; then
   link_campaign3 "${ROOT}/reports/live/portfolio/PORTFOLIO.md"
 fi
 

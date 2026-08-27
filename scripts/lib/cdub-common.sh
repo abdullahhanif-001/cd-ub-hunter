@@ -15,7 +15,7 @@ cdub_repo_root() {
 
 cdub_require_file() {
   local f="$1"
-  if [ ! -f "$f" ]; then
+  if [[ ! -f "$f" ]]; then
     echo "FATAL: required file missing: $f" >&2
     return 1
   fi

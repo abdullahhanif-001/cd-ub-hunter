@@ -11,7 +11,7 @@ WORKDIR="${CAMP}/cdub-src"
 BINDIR="${CAMP}/cdub-bin"
 mkdir -p "$WORKDIR" "$BINDIR"
 
-if [ -z "${DIFF_ID:-}" ]; then
+if [[ -z "${DIFF_ID:-}" ]]; then
   BD="${WORKDIR}/jq-fuzz"
 else
   BD="${WORKDIR}/jq-${DIFF_ID}"
@@ -21,7 +21,7 @@ mkdir -p "$BD"
 cp -a "${JQ_SRC}/." "$BD/"
 cd "$BD"
 # Ensure configure
-if [ ! -x configure ]; then
+if [[ ! -x configure ]]; then
   autoreconf -fi 2>/dev/null || autoreconf -i || true
 fi
 export CC="${CC:?}"
@@ -30,7 +30,7 @@ export CXX="${CXX:?}"
   CC="$CC" CXX="$CXX" 2>&1 | tail -5
 make -j"$(nproc)" 2>&1 | tail -10
 mkdir -p "$BINDIR"
-if [ -z "${DIFF_ID:-}" ]; then
+if [[ -z "${DIFF_ID:-}" ]]; then
   ln -sfn "${BD}/jq" "${BINDIR}/jq"
 else
   ln -sfn "${BD}/jq" "${BINDIR}/jq-${DIFF_ID}"

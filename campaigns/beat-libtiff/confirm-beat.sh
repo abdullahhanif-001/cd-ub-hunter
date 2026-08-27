@@ -39,7 +39,7 @@ confirm_one() {
   run_pair "$inp" "$d"
 
   local disagree=0
-  if [ -f "$d/out0.file" ] && [ -f "$d/out1.file" ]; then
+  if [[ -f "$d/out0.file" ]] && [[ -f "$d/out1.file" ]]; then
     cmp -s "$d/out0.file" "$d/out1.file" || disagree=1
   else
     cmp -s "$d/err0.txt" "$d/err1.txt" || disagree=1
@@ -47,7 +47,7 @@ confirm_one() {
 
   local san_hit=0
   for exe in "$ASAN" "$UBSAN" "$MSAN"; do
-    [ -x "$exe" ] || continue
+    [[ -x "$exe" ]] || continue
     set +e
     timeout 10 "$exe" -M -i "$inp" "$d/san-$(basename "$exe").file" \
       >"$d/san-$(basename "$exe").txt" 2>&1
@@ -55,7 +55,7 @@ confirm_one() {
     set -e
     local t
     t="$(cat "$d/san-$(basename "$exe").txt" 2>/dev/null || true)"
-    if [ "$rc" -lt 0 ] || [ "$rc" -ge 128 ]; then
+    if [[ "$rc" -lt 0 ]] || [[ "$rc" -ge 128 ]]; then
       san_hit=1
     fi
     if echo "$t" | grep -qiE 'sanitizer|runtime error|SUMMARY:|heap-|stack-|memorysanitizer'; then
@@ -65,26 +65,26 @@ confirm_one() {
 
   local stable=1
   local h0 h1
-  if [ -f "$d/out0.file" ] && [ -f "$d/out1.file" ]; then
+  if [[ -f "$d/out0.file" ]] && [[ -f "$d/out1.file" ]]; then
     h0="$(sha256sum "$d/out0.file" | awk '{print $1}')"
     h1="$(sha256sum "$d/out1.file" | awk '{print $1}')"
     for i in 1 2 3; do
       run_pair "$inp" "$d"
-      [ -f "$d/out0.file" ] || { stable=0; break; }
-      [ -f "$d/out1.file" ] || { stable=0; break; }
-      [ "$(sha256sum "$d/out0.file" | awk '{print $1}')" = "$h0" ] || stable=0
-      [ "$(sha256sum "$d/out1.file" | awk '{print $1}')" = "$h1" ] || stable=0
+      [[ -f "$d/out0.file" ]] || { stable=0; break; }
+      [[ -f "$d/out1.file" ]] || { stable=0; break; }
+      [[ "$(sha256sum "$d/out0.file" | awk '{print $1}')" = "$h0" ]] || stable=0
+      [[ "$(sha256sum "$d/out1.file" | awk '{print $1}')" = "$h1" ]] || stable=0
     done
   fi
 
   {
     sha256sum "$T0" "$T1" "$d/input" 2>/dev/null || true
-    [ -f "$d/out0.file" ] && sha256sum "$d/out0.file"
-    [ -f "$d/out1.file" ] && sha256sum "$d/out1.file"
+    [[ -f "$d/out0.file" ]] && sha256sum "$d/out0.file"
+    [[ -f "$d/out1.file" ]] && sha256sum "$d/out1.file"
   } >"$d/SHA256.txt"
 
   local triage=NOISE
-  if [ "$disagree" -eq 1 ] && [ "$san_hit" -eq 0 ] && [ "$stable" -eq 1 ]; then
+  if [[ "$disagree" -eq 1 ]] && [[ "$san_hit" -eq 0 ]] && [[ "$stable" -eq 1 ]]; then
     triage=PROGRAM_UB
     BEAT_COUNT=$((BEAT_COUNT + 1))
     echo "BEAT id=$id triage=$triage" | tee -a "${OUT}/beats.txt"
@@ -98,16 +98,16 @@ confirm_one() {
 : >"${OUT}/beats.txt"
 : >"${OUT}/confirm_log.txt"
 
-if [ -d "$DIFFS" ]; then
+if [[ -d "$DIFFS" ]]; then
   for f in "$DIFFS"/*; do
-    [ -f "$f" ] || continue
+    [[ -f "$f" ]] || continue
     CANDIDATES=$((CANDIDATES + 1))
     confirm_one "$f"
   done
 fi
 
 # Extended scan: corpus + AFL queue
-if [ -x "$T0" ] && [ -x "$T1" ]; then
+if [[ -x "$T0" ]] && [[ -x "$T1" ]]; then
   python3 - <<'PY'
 import json, pathlib, subprocess, hashlib, tempfile, os
 out = pathlib.Path("/opt/cd-ub/reports/live/beat-libtiff")

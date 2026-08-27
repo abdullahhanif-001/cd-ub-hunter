@@ -24,23 +24,23 @@ python3 "${CAMP}/write-beat-report.py"
 
 # Link from portfolio
 PORT="${ROOT}/reports/portfolio/PORTFOLIO.md"
-if [ -f "$PORT" ]; then
+if [[ -f "$PORT" ]]; then
   if ! grep -q "Campaign 2: Beat Google" "$PORT" 2>/dev/null; then
     {
       echo ""
       echo "## Campaign 2: Beat Google sanitizers on OSS-Fuzz target"
-      echo "See [../beat-google/BEAT_REPORT.md](../beat-google/BEAT_REPORT.md)."
+      echo "See [[../beat-google/BEAT_REPORT.md](../beat-google/BEAT_REPORT.md)."
     } >>"$PORT"
   fi
 fi
 # also local live copy
 mkdir -p "${ROOT}/reports/portfolio"
-if [ -f "${ROOT}/reports/live/portfolio/PORTFOLIO.md" ]; then
+if [[ -f "${ROOT}/reports/live/portfolio/PORTFOLIO.md" ]]; then
   if ! grep -q "Campaign 2: Beat Google" "${ROOT}/reports/live/portfolio/PORTFOLIO.md" 2>/dev/null; then
     {
       echo ""
       echo "## Campaign 2: Beat Google sanitizers on OSS-Fuzz target"
-      echo "See [../beat-google/BEAT_REPORT.md](../beat-google/BEAT_REPORT.md)."
+      echo "See [[../beat-google/BEAT_REPORT.md](../beat-google/BEAT_REPORT.md)."
     } >>"${ROOT}/reports/live/portfolio/PORTFOLIO.md"
   fi
 fi

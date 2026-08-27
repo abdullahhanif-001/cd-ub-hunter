@@ -11,7 +11,7 @@ SRC="${CAMP}/src/jq"
 META="${CAMP}/meta"
 mkdir -p "$META" "$(dirname "$SRC")"
 
-if [ ! -d "$SRC/.git" ]; then
+if [[ ! -d "$SRC/.git" ]]; then
   git clone --depth 1 https://github.com/jqlang/jq.git "$SRC"
   # fetch one more commit depth if needed for submodules later
   git -C "$SRC" submodule update --init --recursive || true

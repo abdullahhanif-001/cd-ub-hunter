@@ -15,7 +15,7 @@ BAD=""
 set +e
 BAD="$(grep -RInE 'pm2 (restart|reload|stop|start|delete|kill)' deploy scripts config 2>/dev/null)"
 set -e
-if [ -n "$BAD" ]; then
+if [[ -n "$BAD" ]]; then
   echo "FAIL: pm2 mutate commands found in wrappers:"
   echo "$BAD"
   exit 1
@@ -28,7 +28,7 @@ if ! grep -q 'CONFIRM_USER_WIPE' deploy/contabo/wipe-ephemeral.sh; then
 fi
 
 # Ensure vendored CompDiff for tarball (git repo excludes vendor/)
-if [ ! -d vendor/CompDiff/aflpp ]; then
+if [[ ! -d vendor/CompDiff/aflpp ]]; then
   echo "Fetching CompDiff for pack..."
   mkdir -p vendor
   rm -rf vendor/CompDiff

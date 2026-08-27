@@ -3,7 +3,7 @@
 set -euo pipefail
 
 TAR_PATH="${1:-}"
-if [ -z "$TAR_PATH" ] || [ ! -f "$TAR_PATH" ]; then
+if [[ -z "$TAR_PATH" ]] || [[ ! -f "$TAR_PATH" ]]; then
   echo "Usage: $0 /path/to/cd-ub-<sha>.tar.gz"
   exit 1
 fi
@@ -24,7 +24,7 @@ print(f"GATES_OK disk={avail}G mem={mem}G")
 PY
 
 # Preserve previous marker
-if [ -d "$ROOT" ]; then
+if [[ -d "$ROOT" ]]; then
   mkdir -p "${ROOT}/previous"
   date -u >"${ROOT}/previous/replaced-at.txt"
 fi
@@ -32,7 +32,7 @@ fi
 TMP="$(mktemp -d)"
 tar -xzf "$TAR_PATH" -C "$TMP"
 # find extracted root (files at top of tar)
-if [ -d "$TMP/vendor" ]; then
+if [[ -d "$TMP/vendor" ]]; then
   SRC="$TMP"
 else
   SRC="$(find "$TMP" -mindepth 1 -maxdepth 1 -type d | head -1)"
@@ -40,13 +40,13 @@ fi
 
 mkdir -p "$ROOT"
 # Preserve runtime dirs
-KEEP_BASE=0; [ -d "$ROOT/baseline" ] && KEEP_BASE=1 && mv "$ROOT/baseline" /tmp/cdub-baseline-$$ || true
-KEEP_WORK=0; [ -d "$ROOT/work" ] && KEEP_WORK=1 && mv "$ROOT/work" /tmp/cdub-work-$$ || true
+KEEP_BASE=0; [[ -d "$ROOT/baseline" ]] && KEEP_BASE=1 && mv "$ROOT/baseline" /tmp/cdub-baseline-$$ || true
+KEEP_WORK=0; [[ -d "$ROOT/work" ]] && KEEP_WORK=1 && mv "$ROOT/work" /tmp/cdub-work-$$ || true
 rm -rf "$ROOT"
 mkdir -p "$ROOT"
 cp -a "$SRC"/. "$ROOT"/
-[ "$KEEP_BASE" = 1 ] && rm -rf "$ROOT/baseline" && mv /tmp/cdub-baseline-$$ "$ROOT/baseline" || true
-[ "$KEEP_WORK" = 1 ] && rm -rf "$ROOT/work" && mv /tmp/cdub-work-$$ "$ROOT/work" || true
+[[ "$KEEP_BASE" = 1 ]] && rm -rf "$ROOT/baseline" && mv /tmp/cdub-baseline-$$ "$ROOT/baseline" || true
+[[ "$KEEP_WORK" = 1 ]] && rm -rf "$ROOT/work" && mv /tmp/cdub-work-$$ "$ROOT/work" || true
 
 mkdir -p "$ROOT/baseline" "$ROOT/work" "$ROOT/reports/live" "$ROOT/previous"
 chmod +x "$ROOT"/deploy/contabo/*.sh "$ROOT"/scripts/oneclick/*.sh 2>/dev/null || true
@@ -57,11 +57,11 @@ bash "$ROOT/deploy/contabo/pm2-guard.sh"
 
 # systemd unit with caps
 cat >/etc/systemd/system/cd-ub.service <<'UNIT'
-[Unit]
+[[Unit]]
 Description=CD-UB CompDiff worker (Contabo isolated)
 After=network.target
 
-[Service]
+[[Service]]
 Type=oneshot
 RemainAfterExit=yes
 WorkingDirectory=/opt/cd-ub
@@ -75,7 +75,7 @@ TasksMax=512
 ExecStart=/bin/true
 ExecStop=/bin/true
 
-[Install]
+[[Install]]
 WantedBy=multi-user.target
 UNIT
 

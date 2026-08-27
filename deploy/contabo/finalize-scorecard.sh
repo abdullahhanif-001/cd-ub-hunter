@@ -25,18 +25,18 @@ bash "$ROOT/deploy/contabo/pm2-guard.sh" | tee -a "$SCORE"
 log "## Phase 1: Differential Oracle Validation"
 bash "$ROOT/targets/unstable-overflow/run-oracle.sh" "$ROOT/work/demo-out" | tee -a "$SCORE"
 log "PHASE1_ORACLE=PASS"
-if [ -x "$ROOT/vendor/CompDiff/examples/libtiff/bin/tiffcp" ]; then
+if [[ -x "$ROOT/vendor/CompDiff/examples/libtiff/bin/tiffcp" ]]; then
   log "PHASE1_LIBTIFF_BIN=YES"
 else
   log "PHASE1_LIBTIFF_BIN=NO"
 fi
-if [ -x "$ROOT/targets/unstable-overflow/bin/unstable" ]; then
+if [[ -x "$ROOT/targets/unstable-overflow/bin/unstable" ]]; then
   log "PHASE1_UNSTABLE_BIN=YES"
 else
   log "PHASE1_UNSTABLE_BIN=NO"
 fi
 
-if [ -x "$ROOT/targets/unstable-overflow/bin/unstable" ] && [ -x "$ROOT/vendor/CompDiff/aflpp/afl-fuzz" ]; then
+if [[ -x "$ROOT/targets/unstable-overflow/bin/unstable" ]] && [[ -x "$ROOT/vendor/CompDiff/aflpp/afl-fuzz" ]]; then
   N=$(jq '[.[].configs[]] | length' "$ROOT/vendor/CompDiff/compilers/config")
   mkdir -p "$ROOT/work/findings-unstable2"
   bash "$ROOT/scripts/lib/run-bounded-fuzz.sh" 60 \

@@ -27,9 +27,9 @@ build_one() {
   # copy tree to avoid polluting src
   cp -a "$SRC/." "$bdir/"
   cd "$bdir"
-  if [ ! -f configure ]; then
+  if [[ ! -f configure ]]; then
     autoreconf -i 2>/dev/null || true
-    if [ -f configure.ac ] && [ ! -f configure ]; then
+    if [[ -f configure.ac ]] && [[ ! -f configure ]]; then
       autoreconf -fi
     fi
   fi

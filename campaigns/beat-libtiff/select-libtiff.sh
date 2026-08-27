@@ -11,7 +11,7 @@ SRC="${CAMP}/src/libtiff"
 META="${CAMP}/meta"
 mkdir -p "$META" "$(dirname "$SRC")"
 
-if [ ! -d "$SRC/.git" ]; then
+if [[ ! -d "$SRC/.git" ]]; then
   git clone --depth 1 --branch v4.3.0 https://gitlab.com/libtiff/libtiff.git "$SRC" || {
     rm -rf "$SRC"
     git clone https://gitlab.com/libtiff/libtiff.git "$SRC"

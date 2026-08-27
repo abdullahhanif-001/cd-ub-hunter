@@ -8,7 +8,7 @@ OUT="${ROOT}/reports/live/${CAMPAIGN}"
 STAT="${OUT}/findings/default/fuzzer_stats"
 
 echo "UTC=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-if [ -f "$STAT" ]; then
+if [[ -f "$STAT" ]]; then
   grep -E '^(run_time|execs_done|execs_per_sec|paths_total|paths_found|unique_crashes|bitmap_cvg|cycles_done)' "$STAT"
 fi
 

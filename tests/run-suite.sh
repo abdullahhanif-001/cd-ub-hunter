@@ -4,7 +4,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 export CDUB_ROOT="${CDUB_ROOT:-/opt/cd-ub}"
-if [ -d "$ROOT/deploy/contabo" ] && [ -f "$ROOT/config/ephemeral.env" ]; then
+if [[ -d "$ROOT/deploy/contabo" ]] && [[ -f "$ROOT/config/ephemeral.env" ]]; then
   export CDUB_ROOT="$ROOT"
 fi
 
@@ -12,7 +12,7 @@ echo "=== CD-UB Hunter Verification Suite ==="
 echo "ROOT=$CDUB_ROOT"
 echo "DATE_UTC=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
-if [ -x "$CDUB_ROOT/vendor/CompDiff/aflpp/afl-fuzz" ]; then
+if [[ -x "$CDUB_ROOT/vendor/CompDiff/aflpp/afl-fuzz" ]]; then
   bash "$CDUB_ROOT/deploy/contabo/finish-tests.sh"
 else
   echo "WARN: CompDiff not built — running portable phases only"

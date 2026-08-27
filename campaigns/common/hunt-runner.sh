@@ -27,7 +27,7 @@ if ! dir_has_entries "$SEEDS"; then
 fi
 
 BIN="${CAMP}/${BIN_REL}"
-test -x "$BIN"
+[[ -x "$BIN"
 
 set +e
 timeout "$HUNT_SECONDS" \
@@ -38,7 +38,7 @@ timeout "$HUNT_SECONDS" \
 set -e
 
 DIFF_DIR="${FIND}/default/diffs"
-if [ ! -d "$DIFF_DIR" ]; then
+if [[ ! -d "$DIFF_DIR" ]]; then
   DIFF_DIR="${FIND}/diffs"
 fi
 mkdir -p "$DIFF_DIR"
@@ -49,7 +49,7 @@ if dir_has_entries "$DIFF_DIR"; then
     --bin "$BIN" --args "$POST_ARGS" -y "$N" -r 1 \
     -i "$DIFF_DIR" -o "${OUT}/cdub_post" \
     2>&1 | tee "${OUT}/diff-post.log"; then
-    if [ -d "${OUT}/cdub_post/diffs" ]; then
+    if [[ -d "${OUT}/cdub_post/diffs" ]]; then
       cp -a "${OUT}/cdub_post/diffs/." "${OUT}/cdub_diffs/"
     fi
   else

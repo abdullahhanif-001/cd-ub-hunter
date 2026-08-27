@@ -79,8 +79,8 @@ int main(int argc, char **argv) {
   int base = 7;
   if (argc > 1) { FILE *f=fopen(argv[1],"r"); if(f){fscanf(f,"%d",&base); fclose(f);} }
   int i = base;
-  int a[2];
-  a[i++] = i++;
+  int a[2]];
+  a[i++]] = i++;
   printf("R %d %d %d\n", a[base], a[base+1], i);
   return 0;
 }
@@ -145,12 +145,12 @@ run_pair() {
   timeout 2 "$d/gccO0" "$seed" >"$out0" 2>&1 || echo "EXIT:$?" >>"$out0"
   timeout 2 "$d/clangO3" "$seed" >"$out3" 2>&1 || echo "EXIT:$?" >>"$out3"
   local ubsan_hit=0
-  if [ -x "$d/ubsan" ]; then
+  if [[ -x "$d/ubsan" ]]; then
     set +e
     timeout 2 "$d/ubsan" "$seed" >"$outu" 2>&1
     local rc=$?
     set -e
-    if [ "$rc" -ne 0 ] || grep -qiE 'runtime error|undefined|Sanitizer' "$outu"; then
+    if [[ "$rc" -ne 0 ]] || grep -qiE 'runtime error|undefined|Sanitizer' "$outu"; then
       ubsan_hit=1
     fi
   fi

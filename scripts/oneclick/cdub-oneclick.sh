@@ -38,7 +38,7 @@ apt-get install -y --no-install-recommends \
 
 cd "$ROOT/vendor"
 mkdir -p "$ROOT/vendor"
-if [ ! -d CompDiff ] || [ ! -L CompDiff/aflpp/types.h ]; then
+if [[ ! -d CompDiff ]] || [[ ! -L CompDiff/aflpp/types.h ]]; then
   echo "Cloning CompDiff on Linux (pin ${COMPDIFF_PIN:-2b2cdd3fa31f83c9a9e4070c2131d156c3dfcad4})..." | tee -a "$SCORE"
   rm -rf CompDiff
   git clone --depth 1 https://github.com/shao-hua-li/CompDiff.git CompDiff
@@ -58,7 +58,7 @@ fi
 
 (
   cd "$ROOT/vendor/CompDiff"
-  if [ ! -x compilers/diff-cc-0 ]; then
+  if [[ ! -x compilers/diff-cc-0 ]]; then
     (cd compilers && source ./build.sh)
   fi
 )
@@ -77,7 +77,7 @@ else
   log "PHASE1_ORACLE=FAIL"
 fi
 
-if [ -x "$ROOT/vendor/CompDiff/aflpp/afl-fuzz" ]; then
+if [[ -x "$ROOT/vendor/CompDiff/aflpp/afl-fuzz" ]]; then
   if bash "$ROOT/vendor/CompDiff/diff-instrument.sh" \
     "$ROOT/targets/unstable-overflow/build.sh" \
     2>&1 | tee "$ROOT/reports/live/t1-instrument.log" | tail -40 | tee -a "$SCORE"; then
@@ -86,7 +86,7 @@ if [ -x "$ROOT/vendor/CompDiff/aflpp/afl-fuzz" ]; then
     echo "WARN: unstable instrument returned non-zero" >&2
   fi
   BINDIR="$ROOT/targets/unstable-overflow/bin"
-  if [ -x "$BINDIR/unstable" ]; then
+  if [[ -x "$BINDIR/unstable" ]]; then
     mkdir -p "$ROOT/work/findings-unstable"
     bash "$ROOT/scripts/lib/run-bounded-fuzz.sh" 120 \
       "$ROOT/vendor/CompDiff/aflpp/afl-fuzz" -y "$N" \
@@ -106,7 +106,7 @@ else
   log "T1_COMPDIFF_FUZZ=SKIP_NO_AFL"
 fi
 bash "$ROOT/deploy/contabo/pm2-guard.sh" | tee -a "$SCORE"
-if [ "$T1_OK" -eq 1 ]; then
+if [[ "$T1_OK" -eq 1 ]]; then
   log "PHASE1_AGGREGATE=PASS"
 else
   log "PHASE1_AGGREGATE=FAIL"
@@ -124,7 +124,7 @@ if bash "$ROOT/targets/unstable-overflow/run-oracle.sh" "$ROOT/work/ultra-out" |
   ULTRA="PASS"
 fi
 
-if [ "${RUN_LIBTIFF:-1}" = "1" ] && [ -x "$ROOT/vendor/CompDiff/aflpp/afl-clang-fast" ]; then
+if [[ "${RUN_LIBTIFF:-1}" = "1" ]] && [[ -x "$ROOT/vendor/CompDiff/aflpp/afl-clang-fast" ]]; then
   log "LIBTIFF_INSTRUMENT=START"
   if bash "$ROOT/vendor/CompDiff/diff-instrument.sh" \
     "$ROOT/vendor/CompDiff/examples/libtiff/build.sh" \
@@ -134,7 +134,7 @@ if [ "${RUN_LIBTIFF:-1}" = "1" ] && [ -x "$ROOT/vendor/CompDiff/aflpp/afl-clang-
     echo "WARN: libtiff instrument returned non-zero" >&2
   fi
   TB="$ROOT/vendor/CompDiff/examples/libtiff/bin"
-  if [ -x "$TB/tiffcp" ]; then
+  if [[ -x "$TB/tiffcp" ]]; then
     mkdir -p "$ROOT/work/findings-libtiff" "$ROOT/work/seeds-libtiff"
     printf '\x49\x49\x2a\x00' >"$ROOT/work/seeds-libtiff/mini.tif"
     bash "$ROOT/scripts/lib/run-bounded-fuzz.sh" 180 \
@@ -151,7 +151,7 @@ if [ "${RUN_LIBTIFF:-1}" = "1" ] && [ -x "$ROOT/vendor/CompDiff/aflpp/afl-clang-
   fi
 fi
 
-if [ "${RUN_XPDF:-0}" = "1" ] && [ -x "$ROOT/vendor/CompDiff/aflpp/afl-clang-fast" ]; then
+if [[ "${RUN_XPDF:-0}" = "1" ]] && [[ -x "$ROOT/vendor/CompDiff/aflpp/afl-clang-fast" ]]; then
   log "XPDF_INSTRUMENT=START"
   if bash "$ROOT/vendor/CompDiff/diff-instrument.sh" \
     "$ROOT/vendor/CompDiff/examples/xpdf/build.sh" \
@@ -163,7 +163,7 @@ if [ "${RUN_XPDF:-0}" = "1" ] && [ -x "$ROOT/vendor/CompDiff/aflpp/afl-clang-fas
 fi
 
 bash "$ROOT/deploy/contabo/pm2-guard.sh" | tee -a "$SCORE"
-if [ "$ULTRA" = "PASS" ]; then
+if [[ "$ULTRA" = "PASS" ]]; then
   log "PHASE3_CONFIRMATION=PASS"
 else
   log "PHASE3_CONFIRMATION=FAIL"
@@ -176,7 +176,7 @@ if systemctl show cd-ub.service -p CPUQuota -p MemoryMax -p Nice 2>/dev/null | t
   :
 fi
 
-if [ "$ULTRA" = "PASS" ] && [ "$T1_OK" -eq 1 ]; then
+if [[ "$ULTRA" = "PASS" ]] && [[ "$T1_OK" -eq 1 ]]; then
   log "VERDICT=READY"
   exit 0
 fi

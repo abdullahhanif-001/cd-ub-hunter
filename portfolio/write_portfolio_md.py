@@ -1,23 +1,45 @@
 #!/usr/bin/env python3
-"""Write PORTFOLIO.md from PORTFOLIO_REPORT.json + env facts (no shell-injection)."""
-import json, os, pathlib, sys
+"""Write PORTFOLIO.md from PORTFOLIO_REPORT.json + env facts (path-validated)."""
+from __future__ import annotations
 
-out = pathlib.Path(sys.argv[1])
-rep = json.loads((out / "PORTFOLIO_REPORT.json").read_text())
-m, g = rep["metrics"], rep["gates"]
-env = {
-    "HOST": os.environ.get("PF_HOST", ""),
-    "DATE_UTC": os.environ.get("PF_DATE", ""),
-    "GCC_V": os.environ.get("PF_GCC", ""),
-    "CLANG_V": os.environ.get("PF_CLANG", ""),
-    "UNAME": os.environ.get("PF_UNAME", ""),
-    "DISK": os.environ.get("PF_DISK", ""),
-    "MEM": os.environ.get("PF_MEM", ""),
-    "PM2": os.environ.get("PF_PM2", ""),
-}
-all_ok = all(g.values())
-verdict = "PORTFOLIO_PASS" if all_ok else "PORTFOLIO_NEEDS_WORK"
-md = f"""# CD-UB Portfolio Elite Evaluation
+import json
+import os
+import pathlib
+import sys
+
+
+def resolve_portfolio_dir(raw: str | None) -> pathlib.Path:
+    root = pathlib.Path(os.environ.get("CDUB_ROOT", "/opt/cd-ub")).resolve()
+    allowed = (root / "reports" / "portfolio").resolve()
+    if not raw:
+        return allowed
+    candidate = pathlib.Path(raw).resolve()
+    if candidate != allowed and allowed not in candidate.parents:
+        raise SystemExit(f"refusing path outside portfolio dir: {candidate}")
+    return candidate
+
+
+def main() -> int:
+    out = resolve_portfolio_dir(sys.argv[1] if len(sys.argv) > 1 else None)
+    report_path = out / "PORTFOLIO_REPORT.json"
+    if not report_path.is_file():
+        raise SystemExit(f"missing report: {report_path}")
+
+    rep = json.loads(report_path.read_text(encoding="utf-8"))
+    m, g = rep["metrics"], rep["gates"]
+    env = {
+        "HOST": os.environ.get("PF_HOST", ""),
+        "DATE_UTC": os.environ.get("PF_DATE", ""),
+        "GCC_V": os.environ.get("PF_GCC", ""),
+        "CLANG_V": os.environ.get("PF_CLANG", ""),
+        "UNAME": os.environ.get("PF_UNAME", ""),
+        "DISK": os.environ.get("PF_DISK", ""),
+        "MEM": os.environ.get("PF_MEM", ""),
+        "PM2": os.environ.get("PF_PM2", ""),
+    }
+    all_ok = all(g.values())
+    verdict = "PORTFOLIO_PASS" if all_ok else "PORTFOLIO_NEEDS_WORK"
+    md = f"""# CD-UB Portfolio Elite Evaluation
 
 **Audience:** Staff/Principal engineers (Google / Microsoft compiler & security orgs)  
 **Method:** NIST Juliet-style labeled BAD/GOOD + CompDiff `gcc -O0` vs `clang -O3` + UBSan co-check  
@@ -71,6 +93,11 @@ md = f"""# CD-UB Portfolio Elite Evaluation
 ## Verdict
 **{verdict}**
 """
-(out / "PORTFOLIO.md").write_text(md)
-print(verdict)
-sys.exit(0 if all_ok else 1)
+    output_md = out / "PORTFOLIO.md"
+    output_md.write_text(md, encoding="utf-8")
+    print(verdict)
+    return 0 if all_ok else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

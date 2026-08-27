@@ -22,15 +22,15 @@ bash "$ROOT/deploy/contabo/pm2-guard.sh" | tee -a "$SCORE"
 bash "$ROOT/deploy/contabo/apply-profile.sh" speed-2 | tee -a "$SCORE"
 (
   cd "$ROOT/vendor/CompDiff/compilers"
-  if [ ! -x ./diff-cc-0 ]; then
+  if [[ ! -x ./diff-cc-0 ]]; then
     # shellcheck disable=SC1091
     source ./build.sh
   fi
 )
 N=$(jq '[.[].configs[]] | length' "$ROOT/vendor/CompDiff/compilers/config")
 log "DIFF_CONFIG_COUNT=$N"
-test -x "$ROOT/vendor/CompDiff/aflpp/afl-fuzz"
-test -x "$ROOT/vendor/CompDiff/aflpp/afl-clang-fast"
+[[ -x "$ROOT/vendor/CompDiff/aflpp/afl-fuzz"
+[[ -x "$ROOT/vendor/CompDiff/aflpp/afl-clang-fast"
 log "AFL_OK=1"
 
 log "## Phase 1: Differential Oracle Validation"
@@ -46,7 +46,7 @@ else
 fi
 
 BINDIR="$ROOT/targets/unstable-overflow/bin"
-if [ -x "$BINDIR/unstable" ]; then
+if [[ -x "$BINDIR/unstable" ]]; then
   mkdir -p "$ROOT/work/findings-unstable"
   bash "$ROOT/scripts/lib/run-bounded-fuzz.sh" 90 \
     "$ROOT/vendor/CompDiff/aflpp/afl-fuzz" -y "$N" \
@@ -71,7 +71,7 @@ else
 fi
 
 TB="$ROOT/vendor/CompDiff/examples/libtiff/bin"
-if [ -x "$TB/tiffcp" ]; then
+if [[ -x "$TB/tiffcp" ]]; then
   mkdir -p "$ROOT/work/seeds-libtiff" "$ROOT/work/findings-libtiff"
   printf 'II*\x00' >"$ROOT/work/seeds-libtiff/mini.tif"
   bash "$ROOT/scripts/lib/run-bounded-fuzz.sh" 120 \
