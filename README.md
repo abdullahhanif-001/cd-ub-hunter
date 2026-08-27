@@ -37,7 +37,10 @@ bash /opt/cd-ub/deploy/contabo/install-from-tar.sh /opt/cd-ub-incoming/cd-ub-*.t
 bash /opt/cd-ub/scripts/oneclick/cdub-oneclick.sh
 ```
 
-## Verification
+## Quality gates
+
+SonarQube analysis scope: owned wrapper only (`vendor/` excluded). Run `bash tests/run-suite.sh` before analysis.
+
 
 See [tests/TEST_PLAN.md](tests/TEST_PLAN.md) for the formal phase matrix. Production evidence: [tests/evidence/contabo-verification-2026-08-27.md](tests/evidence/contabo-verification-2026-08-27.md).
 

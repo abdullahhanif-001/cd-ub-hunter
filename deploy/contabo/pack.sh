@@ -11,7 +11,10 @@ SHA="${PIN:0:12}"
 OUT="cd-ub-${SHA}.tar.gz"
 
 # Grep gate: forbid PM2 mutate in our wrappers (not vendor AFL source noise)
-BAD="$(grep -RInE 'pm2 (restart|reload|stop|start|delete|kill)' deploy scripts config 2>/dev/null || true)"
+BAD=""
+set +e
+BAD="$(grep -RInE 'pm2 (restart|reload|stop|start|delete|kill)' deploy scripts config 2>/dev/null)"
+set -e
 if [ -n "$BAD" ]; then
   echo "FAIL: pm2 mutate commands found in wrappers:"
   echo "$BAD"
@@ -30,7 +33,9 @@ if [ ! -d vendor/CompDiff/aflpp ]; then
   mkdir -p vendor
   rm -rf vendor/CompDiff
   git clone --depth 1 https://github.com/shao-hua-li/CompDiff.git vendor/CompDiff
-  git -C vendor/CompDiff checkout "${PIN}" 2>/dev/null || true
+  if ! git -C vendor/CompDiff checkout "${PIN}" 2>/dev/null; then
+    echo "WARN: could not checkout pin ${PIN}" >&2
+  fi
 fi
 
 rm -f "$OUT"

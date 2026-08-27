@@ -1,0 +1,2 @@
+# SonarQube / ShellCheck — owned wrapper code quality gates
+disable=SC1091,SC2034

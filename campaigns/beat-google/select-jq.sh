@@ -3,7 +3,7 @@
 set -euo pipefail
 ROOT="${CDUB_ROOT:-/opt/cd-ub}"
 # shellcheck disable=SC1091
-source "${ROOT}/config/ephemeral.env" 2>/dev/null || true
+source "${ROOT}/campaigns/common/campaign-env.sh"
 bash "${ROOT}/deploy/contabo/pm2-guard.sh"
 
 CAMP="${ROOT}/campaigns/beat-google"

@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="${CDUB_ROOT:-/opt/cd-ub}"
 export CDUB_ROOT="$ROOT"
 # shellcheck disable=SC1091
-source "${ROOT}/config/ephemeral.env" 2>/dev/null || true
+source "${ROOT}/campaigns/common/campaign-env.sh"
 export AFL_NO_X86=1 AFL_NO_AFFINITY=1 AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1
 export HUNT_SECONDS="${HUNT_SECONDS:-1800}"
 

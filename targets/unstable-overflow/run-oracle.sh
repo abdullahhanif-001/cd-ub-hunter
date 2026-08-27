@@ -10,8 +10,16 @@ SEED="${DIR}/seeds/overflow.txt"
 gcc -O0 -o "$OUT/prog-gcc-O0" "$DIR/program.c"
 clang -O3 -o "$OUT/prog-clang-O3" "$DIR/program.c"
 
-"$OUT/prog-gcc-O0" "$SEED" >"$OUT/out-gcc-O0.txt" 2>&1 || true
-"$OUT/prog-clang-O3" "$SEED" >"$OUT/out-clang-O3.txt" 2>&1 || true
+run_prog() {
+  local bin="$1"
+  local outfile="$2"
+  if ! "$bin" "$SEED" >"$outfile" 2>&1; then
+    echo "WARN: $bin exited non-zero (output captured)" >&2
+  fi
+}
+
+run_prog "$OUT/prog-gcc-O0" "$OUT/out-gcc-O0.txt"
+run_prog "$OUT/prog-clang-O3" "$OUT/out-clang-O3.txt"
 
 echo "=== Baseline compiler output (gcc -O0) ==="
 cat "$OUT/out-gcc-O0.txt"
